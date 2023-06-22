@@ -1,0 +1,230 @@
+
+<html>
+
+    <head>
+
+        <meta charset="UTF-8">
+        <title>Jogo Detetive</title>
+
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+    </head>
+
+
+    <body>
+            
+        <py-script>
+
+            import tkinter as tk
+
+
+# Dicionário de suspeitos
+suspeitos = {
+    1: {
+        'nome': 'Suspeito 1',
+        'profissao': 'CIA',
+        'cor': 'Azul',
+        'arma': 'Pistola',
+        'país': 'Estados Unidos'
+    },
+    2: {
+        'nome': 'Suspeito 2',
+        'profissao': 'FBI',
+        'cor': 'Vermelho',
+        'arma': 'Faca',
+        'país': 'Estados Unidos'
+    },
+    3: {
+        'nome': 'Suspeito 3',
+        'profissao': 'MI5',
+        'cor': 'Verde',
+        'arma': 'Veneno',
+        'país': 'Reino Unido'
+    },
+    4: {
+        'nome': 'Suspeito 4',
+        'profissao': 'SWAT',
+        'cor': 'Preto',
+        'arma': 'Metralhadora',
+        'país': 'Estados Unidos'
+    },
+    5: {
+        'nome': 'Suspeito 5',
+        'profissao': 'RONE',
+        'cor': 'Branco',
+        'arma': 'Bastão',
+        'país': 'Brasil'
+    }
+}
+# Preposições
+preposicoes = [
+
+    "Era 27 de novembro quando 5 agentes secretos de diferentes empresas de inteligência se reuniram para discutir sobre um único assunto, ",
+    "um grupo terrorista que estava causando problemas e diversas mortes ao redor do globo. Todos estavam esperando a chegada da presidente ",
+    "da Interpol em diferentes lugares da sede. Foi possível ouvir um grito, e quando chegaram na sala dela, ela estava morta, mas quem poderia ",
+    "cometer um crime tão ousado? Mais ninguém sabia da local da reunião além dos cinco agentes e os poucos funcionarios, então logo começaram a ",
+    "desconfiar e investigar.",
+    "",
+    "Quem assassinou a presidente da Interpol?",
+    "", "",
+    "Agente 1:",
+    "1. Eu estava no jardim, apreciando a paisagem.",
+    "2. acho que vi um vulto vermelho correndo em direção a cozinha logo depois de eu ter ouvido gritos.",
+    "", "",
+    "Agente 2:",
+    "1. Quando ouvi gritos eu saí correndo a procura de mais alguém, instruíram a gente a ficar com pelo menos uma pessoa. Então fui procurar o Agente 5.",
+    "2. Não ouvi sons de tiro",
+    "", "",
+    "Agente 3:",
+    "1. Eu estava junto com o Agente 5 na cozinha, experimentando os pratos que estavam saindo da cozinha.",
+    "2. Eu desconfio do Agente 1. Mas o 1 é muito calmo, não sei..., mas a pistola dele tem silenciador. ",
+    "", "",
+    "Agente 4:",
+    "1. Eu nunca teria feito algo para machucar ela.",
+    "2. Encontrei e ela já estava morta",
+    "3. Apesar de morta, não virou uma peneira.",
+    "", "",
+    "Agente 5:",
+    "1. Depois de ter ouvido o grito, vi o Agente 2 correndo em nossa direção. Estava bem aflito.",
+    "2. Eu Estava na cozinha junto com o Agente 3.",
+    "3. Eu acredito que foi o 4. Conveniente ele ter encontrado o corpo, além de que ele fez questão de deixar claro que nunca foi com a cara daquela mulher",
+
+]
+
+
+
+# Função para iniciar o jogo
+def iniciar_jogo():
+    label_selecao.config(state=tk.NORMAL)
+    opcoes_menu.config(state=tk.NORMAL)
+    botao_exibir.config(state=tk.NORMAL)
+    botao_adivinhar.config(state=tk.NORMAL)
+    label_preposicoes.config(state=tk.NORMAL)
+    botao_start.config(state=tk.DISABLED)
+    entry_resposta.config(state=tk.NORMAL)
+
+# Função para exibir informações do suspeito selecionado
+def exibir_informacoes():
+    suspeito_id = int(opcoes.get())
+    suspeito = suspeitos[suspeito_id]
+
+    informacoes["text"] = f"Nome: {suspeito['nome']}\n"
+    informacoes["text"] += f"Profissão: {suspeito['profissao']}\n"
+    informacoes["text"] += f"cor: {suspeito['cor']}\n"
+    informacoes["text"] += f"arma: {suspeito['arma']}\n"
+    informacoes["text"] += f"país: {suspeito['país']}"
+
+# Função para adivinhar o suspeito
+def adivinhar_suspeito():
+    suspeito_id = int(opcoes.get())
+    if suspeito_id == suspeito_correto:
+        resultado["text"] = "Parabéns, você adivinhou corretamente! O Agente 3 envenenou secretamente a comida enquanto estava na cozinha com o Agente 5."
+        resultado["fg"] = "green"
+    else:
+        resultado["text"] = "Desculpe, você errou! Tente novamente."
+        resultado["fg"] = "red"
+
+
+# Configuração da janela
+window = tk.Tk()
+window.title("Detetive")
+window.geometry("800x600")
+
+# Configuração do botão de iniciar o jogo
+botao_start = tk.Button(window, text="Iniciar Jogo", command=iniciar_jogo)
+botao_start.pack()
+
+# Configuração do rótulo de seleção de suspeito
+label_selecao = tk.Label(window, text="Selecione um suspeito:")
+label_selecao.pack()
+label_selecao.config(state=tk.DISABLED)
+
+# Configuração das opções de seleção de suspeito
+opcoes = tk.StringVar(window)
+opcoes.set("1")
+
+opcoes_menu = tk.OptionMenu(window, opcoes, "1", "2", "3", "4", "5")
+opcoes_menu.pack()
+opcoes_menu.config(state=tk.DISABLED)
+
+# Configuração do botão para exibir informações
+botao_exibir = tk.Button(window, text="Exibir Informações", command=exibir_informacoes, bg="red", fg="white")
+botao_exibir.pack()
+botao_exibir.config(state=tk.DISABLED)
+
+# Configuração do botão para adivinhar o suspeito
+botao_adivinhar = tk.Button(window, text="Adivinhar Suspeito", command=adivinhar_suspeito)
+botao_adivinhar.pack()
+botao_adivinhar.config(state=tk.DISABLED)
+
+# Configuração do rótulo de informações
+informacoes = tk.Label(window, text="")
+informacoes.pack()
+
+# Configuração do rótulo de preposições
+label_preposicoes = tk.Label(window, text="\n".join(preposicoes))
+label_preposicoes.pack()
+label_preposicoes.config(state=tk.DISABLED)
+
+# Configuração da tabela de posições
+tabela_frame = tk.Frame(window)
+tabela_frame.pack()
+
+# Rótulos de posição
+label_posicoes = []
+for suspeito_id in range(1, 6):
+    label_posicao = tk.Label(tabela_frame, text="", width=20)
+    label_posicao.grid(row=0, column=suspeito_id-1, padx=5, pady=5)
+    label_posicoes.append(label_posicao)
+
+# Dicionário de posições dos suspeitos (inicialmente vazio)
+posicoes = {}
+
+# Configuração do rótulo de resultado
+resultado = tk.Label(window, text="")
+resultado.pack()
+
+# Suspeito correto
+suspeito_correto = 3
+
+# Configuração do Canvas para exibir a imagem de fundo
+canvas = tk.Canvas(window, width=800, height=600)
+canvas.pack()
+
+# Carregar a imagem de fundo
+imagem_fundo = tk.PhotoImage(file="/workspaces/Jogo_detetive_tentativa2/peq.png")
+canvas.create_image(0, 0, anchor=tk.NW, image=imagem_fundo)
+
+# Configuração da entrada de resposta
+entry_resposta = tk.Entry(window)
+entry_resposta.pack()
+entry_resposta.config(state=tk.DISABLED)
+
+# Configuração da barra de rolagem
+scrollbar = tk.Scrollbar(window)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+# Associar a barra de rolagem ao Canvas
+canvas.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=canvas.yview)
+
+# Atualizar a exibição do Canvas ao rolar a barra de rolagem
+canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+# Frame para conter os widgets
+frame = tk.Frame(canvas)
+
+# Adicionar o frame ao Canvas
+canvas.create_window((0, 0), window=frame, anchor=tk.NW)
+
+# Iniciar a janela principal
+window.mainloop()
+
+        </py-script>
+
+    </body>
+
+
+
+</html>
